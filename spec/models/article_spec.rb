@@ -27,5 +27,13 @@ RSpec.describe Article, type: :model do
       expect(article).not_to be_valid
       expect(article.errors[:slug]).to include("can't be blank")
     end
+
+    it 'tests if slug is unique' do
+      article_one = create(:article)
+      expect(article_one).to be_valid
+      article_two = build(:article, slug: article_one.slug)
+      expect(article_two).not_to be_valid
+      expect(article_two.errors[:slug]).to include('has already been taken')
+    end
   end
 end
