@@ -35,14 +35,14 @@ RSpec.describe ArticlesController do
     end
 
     it 'paginates results' do
-      article_one, article_two, article_three = create_list(:article, 3)
+      _article_one, article_two, _article_three = create_list(:article, 3)
       get '/articles', params: { page: { number: 2, size: 1 } }
       expect(json_data.length).to eq(1)
       expect(json_data.first[:id]).to eq(article_two.id)
     end
 
     it 'contains pagination links in the response' do
-      article_one, article_two, article_three = create_list(:article, 3)
+      _article_one, _article_two, _article_three = create_list(:article, 3)
       get '/articles', params: { page: { number: 2, size: 1 } }
       expect(json[:links].length).to eq(5)
       expect(json[:links].keys).to eq('first', 'prev', 'next', 'last', 'self')
