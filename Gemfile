@@ -36,6 +36,9 @@ gem "jsonapi-serializer"
 # pagination gem compatible with JSON format and rails
 gem "jsom-pagination"
 
+# handles request errors in Rails
+gem "jsonapi_errors_handler"
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
