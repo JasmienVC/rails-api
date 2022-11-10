@@ -13,7 +13,7 @@ class UserAuthenticator
       client_secret: ENV['GITHUB_CLIENT_SECRET']
     )
     res = client.exchange_code_for_token(@code)
-    if res.error.present?
+    if res.try(:error).present?
       raise AuthenticationError
     else
     end
