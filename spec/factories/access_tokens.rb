@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :access_token do
-    token { "MyString" }
-    user { nil }
+    token { '123' }
+    user { create :user }
   end
 end
