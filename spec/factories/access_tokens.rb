@@ -1,6 +1,10 @@
 FactoryBot.define do
+  sequence :token do |n|
+    "token-#{n}"
+  end
+
   factory :access_token do
-    token { '123' }
+    token
     user { create :user }
   end
 end
