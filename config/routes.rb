@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  post 'login', to:'access_tokens#create'
+  post 'login', to: 'access_tokens#create'
+  delete 'logout', to: 'access_tokens#destroy'
   resources :articles, only: %i[index show]
 end

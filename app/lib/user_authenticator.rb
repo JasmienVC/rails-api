@@ -13,10 +13,10 @@ class UserAuthenticator
 
     prepare_user
     @access_token = if user.try(:access_token).present?
-      user.access_token
-    else
-      user.create_access_token
-    end
+                      user.access_token
+                    else
+                      user.create_access_token
+                    end
   end
 
   private
