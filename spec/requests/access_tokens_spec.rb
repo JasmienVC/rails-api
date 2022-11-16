@@ -23,18 +23,6 @@ RSpec.describe AccessTokensController, type: :controller do
       end
     end
 
-    shared_examples_for "authorized requests" do
-      it 'should return 201 status code' do
-        subject
-        expect(response).to have_http_status(:created)
-      end
-
-      it 'should return proper json body' do
-        expect { subject }.to change { User.count }.by(1)
-        expect(json_data['attributes']).to eq({ 'token' => access_token })
-      end
-    end
-
     context 'when no code provided' do
       subject { post :create }
       it_behaves_like "unauthorized requests"
@@ -58,7 +46,7 @@ RSpec.describe AccessTokensController, type: :controller do
         {
           login: 'jsmith1',
           url: 'http://example.com',
-          avatar_url: 'http://exaple.com/avatar',
+          avatar_url: 'http://example.com/avatar',
           name: 'John Smith'
         }
       end
@@ -69,7 +57,19 @@ RSpec.describe AccessTokensController, type: :controller do
       end
 
       subject { post :create, params: { code: 'valid_code' } }
-      it_behaves_like "authorized requests"
+
+      it 'should return 201 status code' do
+        subject
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'should return proper json body' do
+        expect { subject }.to change { User.count }.by(1)
+        user = User.find_by(login: 'jsmith1')
+        expect(json_data['attributes']).to eq(
+          { 'token' => user.access_token.token }
+        )
+      end
     end
   end
 end
