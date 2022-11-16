@@ -3,6 +3,8 @@ class ApplicationController < ActionController::API
   rescue_from UserAuthenticator::AuthenticationError, with: :authentication_error
   rescue_from AuthorizationError, with: :authorization_error
 
+  before_action :authorize!
+
   private
 
   def authorize!

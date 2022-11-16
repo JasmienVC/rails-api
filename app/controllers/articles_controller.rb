@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   include Paginable
+  skip_before_action :authorize!, only: %i[index show]
 
   def index
     paginated_articles = paginate(Article.recent)
