@@ -11,4 +11,7 @@ class ArticlesController < ApplicationController
     article = Article.find(params[:id])
     render json: ArticleSerializer.new(article), status: :ok
   end
+
+  def create
+  end
 end

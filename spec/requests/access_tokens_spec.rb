@@ -4,7 +4,7 @@ RSpec.describe AccessTokensController, type: :controller do
   describe '#create' do
     context 'when no code provided' do
       subject { post :create }
-      it_behaves_like "unauthorized requests"
+      it_behaves_like "unauthorized_requests"
     end
 
     context 'when invalid code provided' do
@@ -17,7 +17,7 @@ RSpec.describe AccessTokensController, type: :controller do
       end
 
       subject { post :create, params: { code: 'invalid_code' } }
-      it_behaves_like "unauthorized requests"
+      it_behaves_like "unauthorized_requests"
     end
 
     context 'when success request' do
@@ -69,7 +69,7 @@ RSpec.describe AccessTokensController, type: :controller do
       let(:access_token) { user.create_access_token }
 
       before { request.headers['authorization'] = "Bearer #{access_token.token}" }
-      
+
       it 'should return 204 status code' do
         subject
         expect(response).to have_http_status(:no_content)
@@ -78,7 +78,6 @@ RSpec.describe AccessTokensController, type: :controller do
       it 'should remove the proper access token' do
         expect { subject }.to change { AccessToken.count }.by(-1)
       end
-
     end
   end
 end
