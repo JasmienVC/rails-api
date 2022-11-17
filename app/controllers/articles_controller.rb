@@ -13,5 +13,33 @@ class ArticlesController < ApplicationController
   end
 
   def create
+    article = Article.new(article_params)
+    if article.valid?
+      # next lesson
+    else
+      errors = {
+        errors: [
+          {
+            source: { pointer: "/data/attributes/title" },
+            detail: "can't be blank"
+          },
+          {
+            source: { pointer: "/data/attributes/content" },
+            detail: "can't be blank"
+          },
+          {
+            source: { pointer: "/data/attributes/slug" },
+            detail: "can't be blank"
+          }
+        ]
+      }
+      render json: errors, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def article_params
+    ActionController::Parameters.new
   end
 end
