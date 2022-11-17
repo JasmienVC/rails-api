@@ -15,7 +15,8 @@ class ArticlesController < ApplicationController
   def create
     article = Article.new(article_params)
     if article.valid?
-      # next lesson
+      article.save
+      render json: article, status: 201
     else
       errors = {
         errors: [
@@ -40,6 +41,6 @@ class ArticlesController < ApplicationController
   private
 
   def article_params
-    ActionController::Parameters.new
+    params.require(:data).require(:attributes).permit(:title, :content, :slug) || ActionController::Parameters.new
   end
 end
