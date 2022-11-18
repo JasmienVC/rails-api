@@ -38,6 +38,28 @@ class ArticlesController < ApplicationController
   end
 
   def update
+    article = Article.edit(params[:id], article_params)
+    if article.update
+      render json: article, status: 204
+    else
+      errors = {
+        errors: [
+          {
+            source: { pointer: "/data/attributes/title" },
+            detail: "can't be blank"
+          },
+          {
+            source: { pointer: "/data/attributes/content" },
+            detail: "can't be blank"
+          },
+          {
+            source: { pointer: "/data/attributes/slug" },
+            detail: "can't be blank"
+          }
+        ]
+      }
+      render json: errors, status: :unprocessable_entity
+    end
   end
 
   private

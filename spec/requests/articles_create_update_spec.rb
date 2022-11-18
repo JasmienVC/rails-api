@@ -88,13 +88,15 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   describe '#update' do
+    let(:article) { create :article }
+
     context 'when no code provided' do
-      subject { put :update }
+      subject { put :update, params: { id: article.id } }
       it_behaves_like 'forbidden_requests'
     end
 
     context 'when invalid code provided' do
-      subject { put :update }
+      subject { put :update, params: { id: article.id } }
       before { request.headers['authorization'] = 'Invalid token' }
       it_behaves_like 'forbidden_requests'
     end
@@ -115,7 +117,7 @@ RSpec.describe ArticlesController, type: :controller do
           }
         end
 
-        subject { put :update, params: invalid_attributes }
+        subject { put :update, params: { id: article.id }, body: invalid_attributes }
 
         it 'should return 422 status code' do
           subject
