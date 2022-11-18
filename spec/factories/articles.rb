@@ -7,5 +7,6 @@ FactoryBot.define do
     title { 'Sample article' }
     content { 'Sample content' }
     slug # { generate(:slug) }
+    association :user
   end
 end

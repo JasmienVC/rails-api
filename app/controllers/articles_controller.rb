@@ -13,53 +13,53 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    article = Article.new(article_params)
-    if article.save
-      render json: article, status: 201
-    else
-      errors = {
-        errors: [
-          {
-            source: { pointer: "/data/attributes/title" },
-            detail: "can't be blank"
-          },
-          {
-            source: { pointer: "/data/attributes/content" },
-            detail: "can't be blank"
-          },
-          {
-            source: { pointer: "/data/attributes/slug" },
-            detail: "can't be blank"
-          }
-        ]
-      }
-      render json: errors, status: :unprocessable_entity
-    end
+    article = current_user.articles.build(article_params)
+    article.save!
+    render json: article, status: 201
+  rescue
+    errors = {
+      errors: [
+        {
+          source: { pointer: "/data/attributes/title" },
+          detail: "can't be blank"
+        },
+        {
+          source: { pointer: "/data/attributes/content" },
+          detail: "can't be blank"
+        },
+        {
+          source: { pointer: "/data/attributes/slug" },
+          detail: "can't be blank"
+        }
+      ]
+    }
+    render json: errors, status: :unprocessable_entity
   end
 
   def update
-    article = Article.update(params[:id], article_params)
-    if article.save
-      render json: article, status: 200
-    else
-      errors = {
-        errors: [
-          {
-            source: { pointer: "/data/attributes/title" },
-            detail: "can't be blank"
-          },
-          {
-            source: { pointer: "/data/attributes/content" },
-            detail: "can't be blank"
-          },
-          {
-            source: { pointer: "/data/attributes/slug" },
-            detail: "can't be blank"
-          }
-        ]
-      }
-      render json: errors, status: :unprocessable_entity
-    end
+    article = current_user.articles.find(params[:id])
+    article.update_attributes!(article_params)
+    render json: article, status: 200
+  rescue ActiveRecord::RecordNotFound
+    authorization_error
+  rescue
+    errors = {
+      errors: [
+        {
+          source: { pointer: "/data/attributes/title" },
+          detail: "can't be blank"
+        },
+        {
+          source: { pointer: "/data/attributes/content" },
+          detail: "can't be blank"
+        },
+        {
+          source: { pointer: "/data/attributes/slug" },
+          detail: "can't be blank"
+        }
+      ]
+    }
+    render json: errors, status: :unprocessable_entity
   end
 
   private
