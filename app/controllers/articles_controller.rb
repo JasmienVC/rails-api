@@ -14,8 +14,7 @@ class ArticlesController < ApplicationController
 
   def create
     article = Article.new(article_params)
-    if article.valid?
-      article.save
+    if article.save
       render json: article, status: 201
     else
       errors = {
@@ -36,6 +35,9 @@ class ArticlesController < ApplicationController
       }
       render json: errors, status: :unprocessable_entity
     end
+  end
+
+  def update
   end
 
   private
