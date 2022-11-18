@@ -81,7 +81,7 @@ RSpec.describe ArticlesController, type: :controller do
         end
 
         it 'should create the article' do
-          expect { subject }.to change{ Article.count }.by(1)
+          expect { subject }.to change { Article.count }.by(1)
         end
       end
     end
@@ -140,6 +140,40 @@ RSpec.describe ArticlesController, type: :controller do
               detail: "can't be blank"
             }
           )
+        end
+      end
+
+      context 'when success request sent' do
+        let(:valid_attributes) do
+          {
+            data: {
+              attributes: {
+                title: 'This is some title',
+                content: 'This is some content',
+                slug: 'this-is-some-title'
+              }
+            }
+          }
+        end
+
+        subject { patch :update, params: valid_attributes.merge(id: article.id) }
+
+        it 'should have 200 status code' do
+          subject
+          expect(response).to have_http_status(:ok)
+        end
+
+        it 'should have proper json body' do
+          subject
+          expect(json).to include(valid_attributes[:data][:attributes])
+        end
+
+        it 'should update the article' do
+          subject
+          expect { subject }.not_to change { Article.count }
+          expect(json[:title]).to eq('This is some title')
+          expect(json[:content]).to eq('This is some content')
+          expect(json[:slug]).to eq('this-is-some-title')
         end
       end
     end
