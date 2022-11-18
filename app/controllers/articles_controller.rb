@@ -38,8 +38,8 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    article = Article.edit(params[:id], article_params)
-    if article.update
+    article = Article.update(params[:id], article_params)
+    if article.save
       render json: article, status: 204
     else
       errors = {
