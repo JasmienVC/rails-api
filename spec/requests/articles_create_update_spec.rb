@@ -148,9 +148,9 @@ RSpec.describe ArticlesController, type: :controller do
           {
             data: {
               attributes: {
-                title: 'This is some title',
-                content: 'This is some content',
-                slug: 'this-is-some-title'
+                title: 'This is some updated title',
+                content: 'This is some updated content',
+                slug: 'this-is-some-updated-title'
               }
             }
           }
@@ -171,9 +171,10 @@ RSpec.describe ArticlesController, type: :controller do
         it 'should update the article' do
           subject
           expect { subject }.not_to change { Article.count }
-          expect(json[:title]).to eq('This is some title')
-          expect(json[:content]).to eq('This is some content')
-          expect(json[:slug]).to eq('this-is-some-title')
+          expect(json[:title]).to eq('This is some updated title')
+          # expect(article.reload.title).to eq(valid_attributes[:data][:attributes][:title])
+          expect(json[:content]).to eq('This is some updated content')
+          expect(json[:slug]).to eq('this-is-some-updated-title')
         end
       end
     end
