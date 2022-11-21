@@ -115,6 +115,7 @@ RSpec.describe ArticlesController, type: :controller do
       before { request.headers['authorization'] = "Bearer #{access_token.token}" }
 
       context 'when invalid parameters provided' do
+
         let(:invalid_attributes) do
           {
             data: {
@@ -143,16 +144,13 @@ RSpec.describe ArticlesController, type: :controller do
             {
               source: { pointer: "/data/attributes/content" },
               detail: "can't be blank"
-            },
-            {
-              source: { pointer: "/data/attributes/slug" },
-              detail: "can't be blank"
             }
           )
         end
       end
 
       context 'when success request sent' do
+
         let(:valid_attributes) do
           {
             data: {

@@ -38,8 +38,9 @@ class ArticlesController < ApplicationController
 
   def update
     article = current_user.articles.find(params[:id])
-    article.update_attributes!(article_params)
-    render json: article, status: 200
+    article.update(article_params)
+    article.save!
+    render json: article, status: :ok
   rescue ActiveRecord::RecordNotFound
     authorization_error
   rescue
@@ -51,10 +52,6 @@ class ArticlesController < ApplicationController
         },
         {
           source: { pointer: "/data/attributes/content" },
-          detail: "can't be blank"
-        },
-        {
-          source: { pointer: "/data/attributes/slug" },
           detail: "can't be blank"
         }
       ]
