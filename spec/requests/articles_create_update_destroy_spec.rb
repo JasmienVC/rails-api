@@ -186,4 +186,44 @@ RSpec.describe ArticlesController, type: :controller do
       end
     end
   end
+
+  describe '#destroy' do
+    let(:user) { create :user }
+    let(:article) { create :article, user: user }
+    let(:access_token) { user.create_access_token }
+
+    subject { delete :destroy, params: { id: article.id } }
+
+    context 'when no authorization header provided' do
+      it_behaves_like 'forbidden_requests'
+    end
+
+    context 'when invalid authorization header provided' do
+      before { request.headers['authorization'] = 'Invalid token' }
+      it_behaves_like 'forbidden_requests'
+    end
+
+    context 'when trying to delete not owned article' do
+      let(:other_user) { create :user }
+      let(:other_article) { create :article, user: other_user }
+      subject { delete :destroy, params: { id: other_article.id } }
+      before { request.headers['authorization'] = "Bearer #{access_token.token}" }
+      it_behaves_like 'forbidden_requests'
+    end
+
+    context 'when valid request' do
+
+      before { request.headers['authorization'] = "Bearer #{access_token.token}" }
+
+      it 'should return 204 status code' do
+        subject
+        expect(response).to have_http_status(:no_content)
+      end
+
+      it 'should remove the proper article' do
+        article
+        expect { subject }.to change { user.articles.count }.by(-1)
+      end
+    end
+  end
 end
