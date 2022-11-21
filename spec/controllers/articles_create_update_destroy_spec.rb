@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ArticlesController, type: :controller do
+  
   describe '#create' do
     context 'when no code provided' do
       subject { post :create }
