@@ -177,7 +177,7 @@ RSpec.describe ArticlesController, type: :controller do
 
         it 'should update the article' do
           subject
-          expect { subject }.not_to change { Article.count }
+          expect { subject }.not_to(change { Article.count })
           expect(json[:title]).to eq('This is some updated title')
           # expect(article.reload.title).to eq(valid_attributes[:data][:attributes][:title])
           expect(json[:content]).to eq('This is some updated content')
