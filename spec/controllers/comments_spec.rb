@@ -85,9 +85,15 @@ RSpec.describe CommentsController, type: :controller do
           expect { subject }.to change { article.comments.count }.by(0)
         end
 
-        it "renders a JSON response with errors for the new comment" do
+        it 'should return 422 status code' do
           subject
           expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it "renders a JSON response with errors for the new comment" do
+          subject
+          pp json_array
+          expect(json_array).to eq({ 'content' => ["can't be blank"] })
         end
       end
     end
