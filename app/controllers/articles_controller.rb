@@ -4,7 +4,7 @@ class ArticlesController < ApplicationController
 
   def index
     paginated_articles = paginate(Article.recent)
-    render_collection(paginated_articles)
+    render_article_collection(paginated_articles)
   end
 
   def show

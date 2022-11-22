@@ -1,20 +1,24 @@
 class CommentsController < ApplicationController
+  include Paginable
+
   skip_before_action :authorize!, only: :index
   before_action :load_article
 
   # GET /comments
   def index
-    comments = @article.comments.all
-    render json: comments, status: :ok
+    comments = @article.comments
+    render json: comments
   end
 
   # POST /comments
   def create
     comment = @article.comments.build(comment_params.merge(user: current_user))
-    comment.save!
-    render json: comment, status: 201
-  rescue ActiveRecord::RecordNotFound
-    authorization_error
+
+    if comment.save
+      render json: comment, status: :created, location: @article
+    else
+      render json: comment.errors, status: :unprocessable_entity
+    end
   end
 
   private
